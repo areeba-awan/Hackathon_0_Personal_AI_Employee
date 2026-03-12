@@ -57,3 +57,64 @@ Thumbs.db
 # Node (if using Node tools)
 node_modules/
 npm-debug.log
+package-lock.json
+yarn.lock
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.hypothesis/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# Local development
+local_config.py
+settings_local.py
+.env.*.local
+
+# Build artifacts
+*.pyc
+*.pyo
+dist/
+build/
+*.egg-info/
+
+# IDE specific
+*.sublime-project
+*.sublime-workspace
+.vscode/settings.json
+.vscode/launch.json
+
+# OS specific
+.AppleDouble
+.LSOverride
+*.swp
+*.swo
+*~
+.#*
+
+# Project specific
+output/
+results/
+temp/
+cache/
+.DS_Store
+Thumbs.db
