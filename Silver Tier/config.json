@@ -1,0 +1,44 @@
+{
+  "vault": {
+    "root_path": ".",
+    "folders": {
+      "inbox": "Inbox",
+      "needs_action": "Needs_Action",
+      "pending_approval": "Pending_Approval",
+      "approved": "Approved",
+      "done": "Done",
+      "rejected": "Rejected",
+      "plans": "Plans",
+      "logs": "Logs"
+    }
+  },
+  "watchers": {
+    "inbox": {
+      "enabled": true,
+      "watch_extensions": [".txt", ".md", ".pdf", ".jpg", ".png"],
+      "prefix": "DROP_"
+    },
+    "gmail": {
+      "enabled": false,
+      "check_interval": 120,
+      "credentials_file": "token.json",
+      "query": "is:unread is:important"
+    },
+    "whatsapp": {
+      "enabled": true,
+      "check_interval": 60,
+      "session_path": "whatsapp_session",
+      "keywords": ["urgent", "invoice", "payment", "deadline", "asap", "emergency", "critical", "action required"]
+    },
+    "linkedin": {
+      "enabled": true,
+      "check_interval": 300,
+      "token_file": "token.json"
+    }
+  },
+  "processing": {
+    "auto_plan": true,
+    "auto_approve": false,
+    "log_level": "INFO"
+  }
+}

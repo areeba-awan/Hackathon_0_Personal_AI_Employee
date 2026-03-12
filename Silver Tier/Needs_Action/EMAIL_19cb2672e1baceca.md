@@ -1,0 +1,15 @@
+---
+type: email
+from: Discord <noreply@discord.com>
+subject: hammadahmed8288 sent you a message
+received: 2026-03-04T20:10:22.195413
+priority: high
+status: pending
+---
+
+## Email Content
+You have 3 new messages @Hammad Ahmed View messages #👉│ramadan-prompting-nights (GIAIC) View messages Need help? Contact our support team or hit us up on X @discord. Want to give us feedback? Let us
+
+## Suggested Actions
+- [ ] Reply
+- [ ] Archive
