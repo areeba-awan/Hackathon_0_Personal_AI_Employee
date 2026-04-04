@@ -9,114 +9,83 @@ Complete Facebook automation system that:
 - ✅ Saves all messages and posts locally
 - ✅ Browser stays open for continuous monitoring
 
-## Quick Start (3 Steps)
+## Quick Start (One Line!)
 
-### Step 1: Configure
 ```bash
-node facebook_master.js config set email your@email.com
-node facebook_master.js config set password yourpassword
+node facebook_run.js your@email.com yourpassword "Hello World"
 ```
 
-### Step 2: Add Auto-Posts (Optional)
-```bash
-node facebook_master.js config add-post "Hello World"
-node facebook_master.js config add-post "Check this out"
-```
-
-### Step 3: Start
-```bash
-node facebook_master.js start
-```
-
-**That's it!** Browser will open automatically and:
-1. Login to Facebook
-2. Start monitoring messages
-3. Auto-post your messages
+That's it! Browser will open and:
+1. Auto-login to Facebook
+2. Post your message
+3. Start monitoring for new messages
 4. Keep running until you press Ctrl+C
-
----
 
 ## Files
 
 | File | Purpose |
 |------|---------|
-| `facebook_master.js` | Main entry point - handles everything |
-| `facebook_automation.js` | Core automation logic |
+| `facebook_run.js` | One-line launcher - just pass email, password, and messages |
+| `facebook_master.js` | Master controller with configuration management |
+| `facebook_automation.js` | Core automation engine |
 | `facebook_config.json` | Configuration file |
 | `facebook_messages.json` | Saved messages |
 | `facebook_posts.json` | Saved posts |
 
----
+## Usage Examples
 
-## Commands
-
-### Start Automation
+### Simple Monitoring (No Posts)
 ```bash
-node facebook_master.js start
-```
-Starts the complete automation:
-- Opens browser
-- Auto-logs in
-- Monitors messages
-- Auto-posts configured messages
-
-### Post a Message
-```bash
-node facebook_master.js post "Your message here"
-node facebook_master.js post "Message with image" /path/to/image.jpg
+node facebook_run.js user@gmail.com password123
 ```
 
-### Configuration
-
-**Show current config:**
+### Post One Message
 ```bash
-node facebook_master.js config show
+node facebook_run.js user@gmail.com password123 "Hello Facebook!"
 ```
 
-**Set a value:**
+### Post Multiple Messages
+```bash
+node facebook_run.js user@gmail.com password123 "Post 1" "Post 2" "Post 3"
+```
+
+## Advanced Usage
+
+### Using facebook_master.js directly
+
+Configure:
 ```bash
 node facebook_master.js config set email user@gmail.com
-node facebook_master.js config set password mypassword
-node facebook_master.js config set autoLogin true
-node facebook_master.js config set headless false
-node facebook_master.js config set monitorInterval 30000
-```
-
-**Add auto-post message:**
-```bash
+node facebook_master.js config set password password123
 node facebook_master.js config add-post "Hello World"
 ```
 
----
-
-## Configuration File
-
-`facebook_config.json`:
-```json
-{
-  "email": "your@email.com",
-  "password": "yourpassword",
-  "autoPost": [
-    { "message": "Hello World", "image": null },
-    { "message": "Check this out", "image": null }
-  ],
-  "monitorInterval": 30000,
-  "autoLogin": true,
-  "headless": false,
-  "enabled": true
-}
+Start:
+```bash
+node facebook_master.js start
 ```
 
-**Options:**
-- `email` - Facebook email
-- `password` - Facebook password
-- `autoPost` - Array of messages to post on startup
-- `monitorInterval` - How often to check for messages (ms)
-- `autoLogin` - Auto-login on start (true/false)
-- `headless` - Run browser in headless mode (true/false)
-- `enabled` - Enable/disable automation
+### Using facebook_automation.js directly
 
----
+Login:
+```bash
+node facebook_automation.js login user@gmail.com password123
+```
+
+Post:
+```bash
+node facebook_automation.js post "Your message"
+```
+
+Monitor:
+```bash
+node facebook_automation.js monitor 30000
+```
+
+Check messages:
+```bash
+node facebook_automation.js check-messages
+```
 
 ## How It Works
 
@@ -133,36 +102,39 @@ node facebook_master.js config add-post "Hello World"
 - Displays notifications for new messages
 - Keeps browser open and active
 
-### Message Format
-```json
-{
-  "id": "msg_1234567890_0",
-  "text": "Message content",
-  "timestamp": "2026-03-28T15:15:21.379Z",
-  "platform": "facebook",
-  "read": false
-}
-```
+## Data Storage
 
-### Post Format
-```json
-{
-  "id": "post_1234567890",
-  "message": "Posted message",
-  "image": null,
-  "timestamp": "2026-03-28T15:15:21.379Z",
-  "platform": "facebook",
-  "status": "posted"
-}
-```
+All data is stored locally:
+- `facebook_messages.json` - All received messages
+- `facebook_posts.json` - All posted messages
+- `sessions/facebook/` - Browser session (cookies, cache)
+- `facebook_config.json` - Configuration
 
----
+## Real Implementation
+
+✅ **Real Facebook Integration:**
+- Uses Playwright for real browser automation
+- Connects to actual Facebook.com
+- Detects real messages from message threads
+- Posts to real Facebook feed
+- Maintains persistent session
+
+✅ **No Mock Data:**
+- All messages are real from Facebook
+- All posts go to real Facebook
+- Session persists across runs
+- Browser automation is real-time
 
 ## Troubleshooting
 
 ### Browser doesn't open
-- Check if Playwright is installed: `npm install playwright`
-- Try: `node facebook_master.js config set headless false`
+```bash
+# Check if Playwright is installed
+npm install playwright
+
+# Verify browsers are installed
+PLAYWRIGHT_BROWSERS_PATH=D:\playwright-browsers npx playwright install
+```
 
 ### Login fails
 - Check email and password are correct
@@ -172,53 +144,20 @@ node facebook_master.js config add-post "Hello World"
 ### Messages not detected
 - Wait 30 seconds for first check
 - Check `facebook_messages.json` for saved messages
-- Try: `node facebook_master.js config set monitorInterval 15000` (faster checks)
+- Try faster monitoring: `node facebook_run.js email pass` (then Ctrl+C and restart)
 
 ### Posts not working
 - Make sure you're logged in
 - Check browser console for errors
 - Try posting manually first
 
----
+## Environment Variables
 
-## Advanced Usage
-
-### Environment Variables
 ```bash
 export FACEBOOK_EMAIL=your@email.com
 export FACEBOOK_PASSWORD=yourpassword
-node facebook_master.js start
+export PLAYWRIGHT_BROWSERS_PATH=D:\playwright-browsers
 ```
-
-### Faster Monitoring
-```bash
-node facebook_master.js config set monitorInterval 15000
-```
-
-### Headless Mode (No Browser Window)
-```bash
-node facebook_master.js config set headless true
-```
-
-### Batch Posts
-```bash
-node facebook_master.js config add-post "Post 1"
-node facebook_master.js config add-post "Post 2"
-node facebook_master.js config add-post "Post 3"
-node facebook_master.js start
-```
-
----
-
-## Data Storage
-
-All data is stored locally:
-- `facebook_messages.json` - All received messages
-- `facebook_posts.json` - All posted messages
-- `sessions/facebook/` - Browser session (cookies, cache)
-- `facebook_config.json` - Configuration
-
----
 
 ## Security Notes
 
@@ -228,54 +167,32 @@ All data is stored locally:
 - Use environment variables for sensitive data
 - Session data is stored locally in `sessions/` folder
 
----
-
-## Examples
-
-### Example 1: Simple Auto-Post
-```bash
-node facebook_master.js config set email user@gmail.com
-node facebook_master.js config set password pass123
-node facebook_master.js config add-post "Hello Facebook!"
-node facebook_master.js start
-```
-
-### Example 2: Monitor Only (No Posts)
-```bash
-node facebook_master.js config set email user@gmail.com
-node facebook_master.js config set password pass123
-node facebook_master.js start
-```
-
-### Example 3: Post with Image
-```bash
-node facebook_master.js post "Check this photo!" /path/to/photo.jpg
-```
-
-### Example 4: Faster Monitoring
-```bash
-node facebook_master.js config set monitorInterval 15000
-node facebook_master.js start
-```
-
----
-
 ## What Gets Saved
 
 ### Messages (`facebook_messages.json`)
-- All messages from all conversations
-- Timestamp of when received
-- Message text
-- Read/unread status
+```json
+{
+  "id": "msg_hash",
+  "text": "Message preview",
+  "fullText": "Full message content",
+  "timestamp": "2026-04-04T18:06:42.923Z",
+  "platform": "facebook",
+  "read": false,
+  "source": "real_facebook"
+}
+```
 
 ### Posts (`facebook_posts.json`)
-- All posts you made
-- Timestamp of posting
-- Message content
-- Image path (if any)
-- Status (posted/failed)
-
----
+```json
+{
+  "id": "post_timestamp",
+  "message": "Posted message",
+  "image": null,
+  "timestamp": "2026-04-04T18:06:42.923Z",
+  "platform": "facebook",
+  "status": "posted"
+}
+```
 
 ## Stopping the Automation
 
@@ -283,8 +200,6 @@ Press `Ctrl+C` in the terminal to stop:
 - Monitoring stops
 - Browser closes
 - Process exits cleanly
-
----
 
 ## Support
 
@@ -297,5 +212,6 @@ For issues:
 ---
 
 **Version:** 1.0.0
-**Last Updated:** 2026-03-28
+**Last Updated:** 2026-04-04
 **Status:** ✅ Ready to use
+**Real Implementation:** ✅ Yes - Real Facebook, Real Messages, Real Posts

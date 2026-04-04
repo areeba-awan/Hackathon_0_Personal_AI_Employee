@@ -99,6 +99,19 @@ class FacebookMaster {
       console.log('📊 Step 5: System Status');
       this.showStatus();
 
+      // Setup event listeners for real-time updates
+      this.automation.on('newMessage', (msg) => {
+        console.log(`\n📨 NEW MESSAGE RECEIVED:`);
+        console.log(`   From: ${msg.text.substring(0, 60)}...`);
+        console.log(`   Time: ${new Date(msg.timestamp).toLocaleTimeString()}\n`);
+      });
+
+      this.automation.on('postCreated', (post) => {
+        console.log(`\n📤 POST CREATED:`);
+        console.log(`   Message: ${post.message.substring(0, 60)}...`);
+        console.log(`   Time: ${new Date(post.timestamp).toLocaleTimeString()}\n`);
+      });
+
       console.log('\n✅ Facebook Automation is now running!');
       console.log('   Messages will be monitored automatically');
       console.log('   Press Ctrl+C to stop\n');

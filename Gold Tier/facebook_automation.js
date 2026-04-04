@@ -5,6 +5,9 @@ const fs = require('fs');
 const path = require('path');
 const EventEmitter = require('events');
 
+// Set Playwright browsers path to D drive
+process.env.PLAYWRIGHT_BROWSERS_PATH = 'D:\\playwright-browsers';
+
 class FacebookAutomation extends EventEmitter {
   constructor() {
     super();
@@ -130,30 +133,58 @@ class FacebookAutomation extends EventEmitter {
 
       // Navigate to messages
       await this.page.goto('https://www.facebook.com/messages', { waitUntil: 'domcontentloaded', timeout: 30000 });
-      await this.page.waitForTimeout(2000);
-
-      // Get all message threads
-      const threads = await this.page.locator('[role="button"][data-testid*="message"]').all();
-      console.log(`Found ${threads.length} message threads`);
+      await this.page.waitForTimeout(3000);
 
       let newMessages = 0;
 
-      for (let i = 0; i < Math.min(threads.length, 5); i++) {
+      // Try multiple selectors for message threads
+      const selectors = [
+        '[role="button"][data-testid*="message"]',
+        '[data-testid="message-thread"]',
+        'div[role="button"]:has(img)',
+        'a[href*="/messages/t/"]'
+      ];
+
+      let threads = [];
+      for (const selector of selectors) {
+        try {
+          const found = await this.page.locator(selector).all();
+          if (found.length > 0) {
+            threads = found;
+            console.log(`Found ${threads.length} message threads using selector: ${selector}`);
+            break;
+          }
+        } catch (e) {
+          // Try next selector
+        }
+      }
+
+      // Extract messages from threads
+      for (let i = 0; i < Math.min(threads.length, 10); i++) {
         try {
           const thread = threads[i];
-          const threadText = await thread.textContent();
+          const threadText = await thread.textContent().catch(() => '');
+          const threadHtml = await thread.innerHTML().catch(() => '');
 
-          // Check if this is a new message
-          const messageId = `msg_${Date.now()}_${i}`;
-          const existingMsg = this.messages.find(m => m.text === threadText);
+          if (!threadText || threadText.trim().length === 0) continue;
 
-          if (!existingMsg && threadText && threadText.trim().length > 0) {
+          // Create unique ID based on content hash
+          const crypto = require('crypto');
+          const messageHash = crypto.createHash('md5').update(threadText).digest('hex');
+          const messageId = `msg_${messageHash}`;
+
+          // Check if message already exists
+          const existingMsg = this.messages.find(m => m.id === messageId);
+
+          if (!existingMsg) {
             const newMsg = {
               id: messageId,
-              text: threadText,
+              text: threadText.substring(0, 200),
+              fullText: threadText,
               timestamp: new Date().toISOString(),
               platform: 'facebook',
-              read: false
+              read: false,
+              source: 'real_facebook'
             };
 
             this.messages.push(newMsg);
@@ -162,13 +193,15 @@ class FacebookAutomation extends EventEmitter {
             this.emit('newMessage', newMsg);
           }
         } catch (e) {
-          // Continue to next thread
+          console.log(`⚠️  Error processing thread ${i}: ${e.message}`);
         }
       }
 
       if (newMessages > 0) {
         this.saveMessages();
         console.log(`✅ Found ${newMessages} new messages`);
+      } else {
+        console.log('ℹ️  No new messages');
       }
 
       return { success: true, newMessages, totalMessages: this.messages.length };
