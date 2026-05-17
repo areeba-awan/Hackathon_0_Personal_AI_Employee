@@ -1,0 +1,4 @@
+- Always work from Needs_Action folder
+- Use file system tools to read, write, move files
+- Never delete anything — only move to Done
+- For every task, end your response with short summary and "TASK COMPLETE" if finished

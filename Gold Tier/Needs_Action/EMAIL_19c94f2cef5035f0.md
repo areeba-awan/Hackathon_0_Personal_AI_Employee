@@ -1,0 +1,15 @@
+---
+type: email
+from: Temu <temu@commerce.temuemail.com>
+subject: Please confirm your 3 for Rs.2,800 Deal
+received: 2026-03-04T20:10:54.050573
+priority: high
+status: pending
+---
+
+## Email Content
+🎁You received it on Feb 25, 2026. Confirm Now&gt; ͏ ‌ ͏ ‌ ͏ ‌ ͏ ‌ ͏ ‌ ͏ ‌ ͏ ‌ ͏ ‌ ͏ ‌ ͏ ‌ ͏ ‌ ͏ ‌ ͏ ‌ ͏ ‌ ͏ ‌ ͏ ‌ ͏ ‌ ͏ ‌ ͏ ‌ ͏ ‌ ͏ ‌ ͏ ‌ ͏ ‌ ͏ ‌ ͏ ‌ ͏ ‌ ͏ ‌ ͏ ‌ ͏ ‌ ͏ ‌ ͏ ‌ ͏ ‌ ͏ ‌ ͏ ‌ ͏ ‌ ͏ ‌ ͏ ‌ ͏ ‌
+
+## Suggested Actions
+- [ ] Reply
+- [ ] Archive
